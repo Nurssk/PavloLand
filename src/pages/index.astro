@@ -1,0 +1,86 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Demo from '../components/Demo.astro';
+import Pricing from '../components/Pricing.astro';
+import Gallery from '../components/Gallery.astro';
+import FAQ from '../components/FAQ.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout>
+  <Nav />
+  <main>
+    <section class="hero-how-stage" data-wordmark-stage>
+      <div class="stage-wordmark" data-stage-wordmark aria-hidden="true">PAVLODAR</div>
+      <Hero />
+      <HowItWorks />
+    </section>
+    <Demo />
+    <Gallery />
+    <Pricing />
+    <FAQ />
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .hero-how-stage {
+    position: relative;
+    background: var(--black);
+    isolation: isolate;
+  }
+
+  .stage-wordmark {
+    position: fixed;
+    left: 50%;
+    bottom: 6vh;
+    z-index: 2;
+    transform: translateX(-50%) skewX(-6deg);
+    color: #fff;
+    font-family: var(--font-wordmark);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 0.82;
+    letter-spacing: -0.01em;
+    font-size: min(19vw, 268px);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.12s ease;
+  }
+
+  .stage-wordmark.is-docked {
+    opacity: 0;
+  }
+
+  @media (max-width: 860px) {
+    .stage-wordmark {
+      font-size: min(19vw, 268px);
+    }
+  }
+</style>
+
+<script>
+  const stage = document.querySelector('[data-wordmark-stage]');
+  const wordmark = document.querySelector('[data-stage-wordmark]');
+  const dockedWordmark = document.querySelector('[data-how-wordmark]');
+
+  const syncWordmark = () => {
+    if (!stage || !wordmark || !dockedWordmark) return;
+    const fixedRect = wordmark.getBoundingClientRect();
+    const dockRect = dockedWordmark.getBoundingClientRect();
+    const dockTop = Math.round(fixedRect.top);
+    const isDocked = dockRect.top <= dockTop + 8;
+
+    dockedWordmark.style.setProperty('--dock-top', `${dockTop}px`);
+    wordmark.classList.toggle('is-docked', isDocked);
+    dockedWordmark.classList.toggle('is-docked', isDocked);
+  };
+
+  syncWordmark();
+  window.addEventListener('scroll', syncWordmark, { passive: true });
+  window.addEventListener('resize', syncWordmark);
+</script>

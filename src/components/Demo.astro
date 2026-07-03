@@ -1,0 +1,549 @@
+---
+---
+
+<section class="demo" id="demo" data-screen-label="Demo">
+  <div class="wrap">
+    <div class="demo-head">
+      <div class="eyebrow on-light">Live demo</div>
+      <h2 class="section-title">Run your own aura scan.</h2>
+      <p class="demo-sub">
+        Same name, same photo, same score — every time. IrtyshNet is nothing if
+        not consistent about its nonsense.
+      </p>
+    </div>
+
+    <div class="demo-grid">
+      <!-- intake -->
+      <form class="panel intake" id="aura-form" novalidate>
+        <label class="field">
+          <span class="label">Full name</span>
+          <input
+            type="text"
+            id="aura-name"
+            placeholder="Anonymous Subject"
+            autocomplete="off"
+            maxlength="60"
+          />
+          <span class="hint">Leave blank and we'll scan you as “Anonymous Subject”.</span>
+        </label>
+
+        <div class="field">
+          <span class="label">Photo</span>
+          <label class="dropzone" id="dropzone" for="aura-photo" tabindex="0">
+            <input type="file" id="aura-photo" accept="image/*" hidden />
+            <div class="dz-empty" id="dz-empty">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="3"/>
+                <circle cx="9" cy="9" r="2"/>
+                <path d="M21 15l-5-5-9 9"/>
+              </svg>
+              <span><b>Upload a face</b> — tap or drop an image</span>
+              <span class="dz-hint">Photos are discarded immediately. We only store the vibe.</span>
+            </div>
+            <img class="dz-preview" id="dz-preview" alt="Uploaded photo preview" hidden />
+          </label>
+          <span class="hint" id="photo-hint">Optional — skipping it reduces nothing, since nothing is measured.</span>
+        </div>
+
+        <button type="submit" class="run-btn" id="aura-submit">Run aura scan</button>
+        <p class="fineprint">
+          Aura scores are fictional. No cultural, ethnic, or geographic claims implied.
+        </p>
+      </form>
+
+      <!-- readout -->
+      <div class="panel readout">
+        <!-- idle -->
+        <div class="state" id="out-idle">
+          <div class="idle-ring" aria-hidden="true"></div>
+          <p class="state-text">Awaiting subject. The steppe is patient.</p>
+        </div>
+
+        <!-- loading -->
+        <div class="state" id="out-loading" hidden>
+          <div class="spinner" aria-hidden="true"></div>
+          <p class="state-text loading-text" id="load-msg" aria-live="polite">Analyzing steppe resilience...</p>
+        </div>
+
+        <!-- result -->
+        <div class="state result" id="out-result" hidden>
+          <div class="score-ring" id="score-ring">
+            <div class="score-inner">
+              <span class="score-num" id="score-num">0</span>
+              <span class="score-unit">% Pavlodar Aura</span>
+            </div>
+          </div>
+          <div class="result-name" id="result-name"></div>
+          <p class="verdict" id="result-verdict"></p>
+          <div class="indexes">
+            <div class="idx">
+              <span class="idx-label">Irtysh Index</span>
+              <span class="idx-value" id="irtysh-index">—</span>
+            </div>
+            <div class="idx">
+              <span class="idx-label">Steppe Resilience</span>
+              <span class="idx-value" id="steppe-level">—</span>
+            </div>
+          </div>
+          <div class="signals">
+            <span class="signals-label">Detected signals</span>
+            <ul id="signal-list"></ul>
+          </div>
+          <button type="button" class="again-btn" id="rescan">Scan again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .demo { padding: 110px 0; background: var(--white); }
+
+  .demo-head {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 56px;
+  }
+
+  .demo-sub {
+    margin-top: 16px;
+    font-size: 15.5px;
+    color: #4a4a4a;
+  }
+
+  .demo-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .panel {
+    border: 1px solid var(--line-light);
+    border-radius: 24px;
+    padding: 36px 32px;
+  }
+
+  .intake {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .field { display: grid; gap: 8px; }
+
+  .label {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .field input[type='text'] {
+    font-family: var(--font-body);
+    font-size: 16px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(11, 11, 11, 0.25);
+    background: #fff;
+    color: var(--black);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .field input[type='text']:focus {
+    border-color: var(--black);
+    box-shadow: 0 0 0 3px rgba(11, 11, 11, 0.08);
+  }
+
+  .hint { font-size: 12.5px; color: var(--muted-2); }
+
+  .dropzone {
+    display: grid;
+    place-items: center;
+    min-height: 180px;
+    border: 1.5px dashed rgba(11, 11, 11, 0.25);
+    border-radius: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .dropzone:hover, .dropzone:focus-visible, .dropzone.is-drag {
+    border-color: var(--black);
+    background: var(--gray-bg);
+    outline: none;
+  }
+
+  .dz-empty {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    padding: 20px;
+    text-align: center;
+    color: #4a4a4a;
+    font-size: 14px;
+  }
+
+  .dz-empty b { color: var(--black); font-weight: 600; }
+  .dz-hint { font-size: 12px; color: var(--muted-2); }
+
+  .dz-preview {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(1) contrast(1.05);
+  }
+
+  .run-btn {
+    background: var(--black);
+    color: #fff;
+    border: 1px solid var(--black);
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+    margin-top: auto;
+  }
+
+  .run-btn:hover { opacity: 0.85; }
+  .run-btn:disabled { opacity: 0.6; cursor: default; }
+
+  .fineprint {
+    font-size: 12px;
+    color: var(--muted-2);
+    text-align: center;
+  }
+
+  /* --- readout states ---------------------------------------- */
+
+  .readout {
+    background: var(--gray-bg);
+    border-color: transparent;
+    display: grid;
+  }
+
+  .state {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    min-height: 420px;
+    text-align: center;
+  }
+
+  .state-text { font-size: 15px; color: #4a4a4a; }
+
+  .idle-ring {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(11, 11, 11, 0.3);
+    animation: pd-spin 24s linear infinite;
+  }
+
+  .spinner {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 3px solid rgba(11, 11, 11, 0.12);
+    border-top-color: var(--black);
+    animation: pd-spin 0.9s linear infinite;
+  }
+
+  .loading-text { font-weight: 500; }
+
+  /* --- result ------------------------------------------------- */
+
+  .result {
+    justify-content: flex-start;
+    padding: 8px 0;
+    animation: pd-fadeup 0.4s ease both;
+  }
+
+  .score-ring {
+    width: 168px;
+    height: 168px;
+    border-radius: 50%;
+    background: conic-gradient(var(--black) 0deg 0deg, rgba(11, 11, 11, 0.12) 0deg 360deg);
+    display: grid;
+    place-items: center;
+  }
+
+  .score-inner {
+    width: 138px;
+    height: 138px;
+    border-radius: 50%;
+    background: var(--gray-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .score-num {
+    font-family: var(--font-display);
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .score-unit { font-size: 11.5px; color: var(--muted); }
+
+  .result-name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  .verdict {
+    font-size: 14.5px;
+    color: #4a4a4a;
+    max-width: 400px;
+    line-height: 1.6;
+  }
+
+  .indexes { display: flex; gap: 40px; }
+
+  .idx { display: grid; gap: 2px; }
+
+  .idx-label {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted-2);
+  }
+
+  .idx-value {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .signals {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .signals-label {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted-2);
+  }
+
+  .signals ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--line-light);
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: left;
+  }
+
+  .signals li {
+    background: #fff;
+    font-size: 13.5px;
+    color: #4a4a4a;
+    padding: 12px 16px;
+  }
+
+  .signals li b { color: var(--black); }
+
+  .again-btn {
+    background: transparent;
+    color: var(--black);
+    border: 1px solid rgba(11, 11, 11, 0.25);
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .again-btn:hover { background: #fff; }
+
+  @media (max-width: 860px) {
+    .demo { padding: 72px 0; }
+    .demo-grid { grid-template-columns: 1fr; }
+    .panel { padding: 28px 22px; }
+    .state { min-height: 380px; }
+  }
+</style>
+
+<script>
+  // Deterministic scoring — same hash the design's script used:
+  // hash = hash*31 + charCode over the trimmed name; score = 68 + hash % 30.
+  function nameHash(str: string): number {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+    }
+    return hash;
+  }
+
+  const LOADING_MESSAGES = [
+    'Analyzing steppe resilience...',
+    'Checking Irtysh proximity...',
+    'Cross-referencing urban-vibe signals...',
+    'Finalizing aura composite...',
+  ];
+
+  const VERDICTS = [
+    'Your urban-vibe signature shows strong steppe resilience, medium Irtysh proximity, and a suspiciously high tolerance for −35°C weather.',
+    'IrtyshNet detects a calm confidence usually reserved for people who have waited for a tram in January.',
+    'Analysis indicates latent affection for industrial sunsets and an unshakeable belief that this frost is “not that bad”.',
+    'The model reports a vibe consistent with someone who owns at least one extremely serious winter coat.',
+  ];
+
+  const SIGNALS = [
+    (p: number) => `<b>${p}%</b> probability of knowing someone with a Subaru`,
+    (p: number) => `<b>${p}%</b> steppe confidence`,
+    (p: number) => `<b>${p}%</b> microexpression of someone who has seen winter and accepted it`,
+    (p: number) => `<b>${p}%</b> instinct to preheat the car remotely`,
+    (p: number) => `<b>${p}%</b> resonance with the Irtysh river at dawn`,
+    (p: number) => `<b>${p}%</b> likelihood of calling −20°C “finally warmer”`,
+  ];
+
+  const STEPPE_LEVELS = ['Emerging', 'Moderate', 'Strong', 'Severe', 'Geological'];
+
+  const $ = (id: string) => document.getElementById(id)!;
+  const form = $('aura-form') as HTMLFormElement;
+  const nameInput = $('aura-name') as HTMLInputElement;
+  const photoInput = $('aura-photo') as HTMLInputElement;
+  const dropzone = $('dropzone');
+  const dzEmpty = $('dz-empty');
+  const dzPreview = $('dz-preview') as HTMLImageElement;
+  const outIdle = $('out-idle');
+  const outLoading = $('out-loading');
+  const outResult = $('out-result');
+  const loadMsg = $('load-msg');
+  const submitBtn = $('aura-submit') as HTMLButtonElement;
+
+  let photoFile: File | null = null;
+  let analyzing = false;
+  let msgTimer: ReturnType<typeof setInterval> | undefined;
+
+  function setPhoto(file: File | null) {
+    photoFile = file;
+    dzPreview.hidden = !file;
+    dzEmpty.hidden = !!file;
+    if (file) dzPreview.src = URL.createObjectURL(file);
+  }
+
+  photoInput.addEventListener('change', () => setPhoto(photoInput.files?.[0] ?? null));
+
+  dropzone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropzone.classList.add('is-drag');
+  });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('is-drag'));
+  dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.classList.remove('is-drag');
+    const file = e.dataTransfer?.files?.[0];
+    if (file && file.type.startsWith('image/')) setPhoto(file);
+  });
+  dropzone.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      photoInput.click();
+    }
+  });
+
+  function show(state: HTMLElement) {
+    for (const el of [outIdle, outLoading, outResult]) el.hidden = el !== state;
+  }
+
+  function renderResult(finalName: string) {
+    const score = 68 + (nameHash(finalName) % 30); // 68–97, per design
+    // photo metadata folds into the secondary readouts only
+    const seed = nameHash(
+      `${finalName}::${photoFile ? `${photoFile.name}:${photoFile.size}:${photoFile.lastModified}` : 'no-photo'}`
+    );
+    const irtysh = (((seed >> 4) % 90) / 10 + 1).toFixed(1);
+    const steppe = STEPPE_LEVELS[(seed >> 7) % STEPPE_LEVELS.length];
+    const verdict = photoFile
+      ? VERDICTS[(seed >> 9) % VERDICTS.length]
+      : 'Aura read from name resonance alone. Skipping the photo was, statistically, a very Pavlodar move.';
+
+    const start = (seed >> 3) % SIGNALS.length;
+    const signalHtml = [0, 1, 2]
+      .map((k) => {
+        const p = 41 + ((seed >> (5 + k * 6)) % 57);
+        return `<li>${SIGNALS[(start + k * 2) % SIGNALS.length](p)}</li>`;
+      })
+      .join('');
+
+    ($('result-name') as HTMLElement).textContent = finalName;
+    ($('result-verdict') as HTMLElement).textContent = verdict;
+    ($('irtysh-index') as HTMLElement).textContent = `${irtysh} / 10`;
+    ($('steppe-level') as HTMLElement).textContent = steppe;
+    ($('signal-list') as HTMLElement).innerHTML = signalHtml;
+
+    show(outResult);
+
+    // animate ring + number
+    const ring = $('score-ring');
+    const numEl = $('score-num');
+    const t0 = performance.now();
+    const dur = 1000;
+    const tick = (t: number) => {
+      const k = Math.min(1, (t - t0) / dur);
+      const eased = 1 - Math.pow(1 - k, 3);
+      const val = Math.round(score * eased);
+      numEl.textContent = String(val);
+      const deg = (val / 100) * 360;
+      ring.style.background = `conic-gradient(var(--black) 0deg ${deg}deg, rgba(11,11,11,0.12) ${deg}deg 360deg)`;
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (analyzing) return;
+
+    analyzing = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Analyzing...';
+    show(outLoading);
+
+    const finalName = nameInput.value.trim() || 'Anonymous Subject';
+
+    let idx = 0;
+    loadMsg.textContent = LOADING_MESSAGES[0];
+    msgTimer = setInterval(() => {
+      idx = (idx + 1) % LOADING_MESSAGES.length;
+      loadMsg.textContent = LOADING_MESSAGES[idx];
+    }, 750);
+
+    setTimeout(() => {
+      clearInterval(msgTimer);
+      analyzing = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Run aura scan';
+      renderResult(finalName);
+    }, 2600);
+  });
+
+  $('rescan').addEventListener('click', () => {
+    show(outIdle);
+    ($('score-num') as HTMLElement).textContent = '0';
+  });
+</script>

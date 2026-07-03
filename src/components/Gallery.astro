@@ -1,0 +1,100 @@
+---
+const people = [
+  { src: '/igor.jpg', name: 'IGOR', note: '100% Pavlodar Aura — patient zero' },
+  { src: '/skrip.jpg', name: 'SKRIP', note: '99% Pavlodar Aura' },
+  { src: '/imanbek.jpg', name: 'IMANBEK', note: '98% Pavlodar Aura — verified vibe' },
+  { src: '/nursultan.jpg', name: 'NURSULTAN', note: '97% Pavlodar Aura' },
+  { src: '/truwer.jpg', name: 'TRUWER', note: '96% Pavlodar Aura' },
+  { src: '/104.jpg', name: '104', note: '104% Pavlodar Aura — off the scale' },
+  { src: '/jillzay.jpg', name: 'JILLZAY', note: '91% collective aura' },
+  { src: '/hakim.jpg', name: 'HAKIM', note: '87% Pavlodar Aura' },
+  { src: '/Aldik.jpg', name: 'ALDIK', note: '83% Pavlodar Aura' },
+];
+---
+
+<section class="gallery" id="trust" data-screen-label="They trust our app">
+  <h2 class="gallery-title">They Trust<br />Our App</h2>
+  <div class="masonry">
+    {people.map((p) => (
+      <figure class="card">
+        <img src={p.src} alt={`${p.name} — aura scan portrait`} loading="lazy" />
+        <figcaption>
+          <span class="name">{p.name}</span>
+          <span class="sep">—</span>
+          <span class="note">{p.note}</span>
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+</section>
+
+<style>
+  .gallery {
+    background: var(--black);
+    color: #fff;
+    padding: 90px 48px 110px;
+  }
+
+  .gallery-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: min(15.5vw, 220px);
+    line-height: 0.94;
+    letter-spacing: -0.03em;
+    margin: 0 0 42px;
+    border-bottom: 1px solid var(--line-dark-strong);
+    padding-bottom: 48px;
+  }
+
+  .masonry {
+    columns: 3;
+    column-gap: 40px;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .card {
+    margin: 0 0 40px;
+    break-inside: avoid;
+  }
+
+  .card img {
+    width: 100%;
+    display: block;
+    filter: grayscale(1) contrast(1.05);
+    transition: filter 0.35s ease;
+  }
+
+  .card:hover img { filter: grayscale(0) contrast(1); }
+
+  figcaption {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    margin-top: 14px;
+    font-size: 14px;
+  }
+
+  .name {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .sep { color: rgba(255, 255, 255, 0.4); }
+
+  .note {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13.5px;
+  }
+
+  @media (max-width: 1000px) {
+    .masonry { columns: 2; column-gap: 24px; }
+    .card { margin-bottom: 24px; }
+  }
+
+  @media (max-width: 640px) {
+    .gallery { padding: 64px 24px 72px; }
+    .gallery-title { padding-bottom: 28px; margin-bottom: 28px; }
+    .masonry { columns: 1; }
+  }
+</style>

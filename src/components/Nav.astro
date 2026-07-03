@@ -1,0 +1,67 @@
+---
+---
+
+<header class="nav">
+  <a class="brand" href="#top">PAVLODAR</a>
+  <nav class="cells" aria-label="Primary">
+    <a href="#how">How it works</a>
+    <a href="#demo">Demo</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a class="cta" href="#demo">Measure aura</a>
+  </nav>
+</header>
+
+<style>
+  .nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line-dark-strong);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    font-family: var(--font-wordmark);
+    font-weight: 400;
+    font-size: 22px;
+    letter-spacing: 0.01em;
+    color: #fff;
+    font-style: italic;
+    transform: skewX(-6deg);
+    text-decoration: none;
+  }
+
+  .cells { display: flex; }
+
+  .cells a {
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    min-height: 64px;
+    border-left: 1px solid var(--line-dark-strong);
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background 0.15s ease;
+  }
+
+  .cells a:hover { background: rgba(255, 255, 255, 0.1); }
+
+  .cells .cta { padding: 0 32px; }
+
+  @media (max-width: 860px) {
+    .cells a:not(.cta) { display: none; }
+    .brand { padding: 0 24px; }
+  }
+</style>

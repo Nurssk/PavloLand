@@ -1,0 +1,477 @@
+---
+const tiers = [
+  {
+    name: 'Free',
+    tagline: 'Casual aura-curious',
+    monthlyPrice: '$0',
+    yearlyPrice: '$0',
+    priceUnit: 'mo',
+    cta: 'Start free',
+    features: [
+      '3 aura scans per day',
+      'Standard IrtyshNet model',
+      'Community aura leaderboard',
+      'Vibe-only storage policy',
+    ],
+  },
+  {
+    name: 'Pro',
+    tagline: 'For the aura-obsessed',
+    monthlyPrice: '$29',
+    yearlyPrice: '$24',
+    priceUnit: 'mo',
+    cta: 'Upgrade to Pro',
+    features: [
+      'Unlimited aura scans',
+      'Historical regret analytics',
+      'Priority IrtyshNet compute',
+      'Exportable aura reports',
+    ],
+  },
+  {
+    name: 'City',
+    tagline: 'For teams, classes, and municipal confusion',
+    monthlyPrice: '$99',
+    yearlyPrice: '$79',
+    priceUnit: 'mo',
+    cta: 'Start city pilot',
+    highlighted: true,
+    badge: 'Popular',
+    features: [
+      'Team aura dashboards',
+      'Bulk invite links',
+      'Department-level vibe reports',
+      'Dedicated onboarding session',
+      'Public-service nonsense mode',
+    ],
+  },
+  {
+    name: 'Enterprise',
+    tagline: 'For corporations and city administrations',
+    monthlyPrice: 'Custom',
+    yearlyPrice: 'Custom',
+    priceUnit: '',
+    cta: 'Talk to sales',
+    features: [
+      'Custom aura deployment',
+      'Executive confusion reports',
+      'Dedicated aura account manager',
+      'SOC2-adjacent documentation',
+    ],
+  },
+];
+---
+
+<section class="pricing" id="pricing" data-screen-label="Pricing" data-pricing>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="section-title">Choose your PVL plan</h2>
+      <p class="subtitle">Straight-faced pricing for a fictional aura product that stores no photos and detects no real origin.</p>
+
+      <div class="billing" aria-label="Billing period selector">
+        <span class="discount">Save 20%</span>
+        <button class="billing-label" type="button" data-billing-yearly>Pay Yearly</button>
+        <button class="billing-switch is-monthly" type="button" aria-label="Toggle pricing period" aria-pressed="true" data-billing-toggle>
+          <span class="switch-knob" aria-hidden="true"></span>
+        </button>
+        <button class="billing-label is-active" type="button" data-billing-monthly>Pay Monthly</button>
+      </div>
+    </div>
+
+    <div class="plans">
+      {tiers.map((tier) => (
+        <article class={`plan ${tier.highlighted ? 'is-highlighted' : ''}`}>
+          {tier.badge && <div class="plan-badge">{tier.badge}</div>}
+
+          <div class="plan-head">
+            <div>
+              <h3 class="plan-name">{tier.name}</h3>
+              <p class="plan-tagline">{tier.tagline}</p>
+            </div>
+
+            <div class="price-row">
+              <span class="plan-price" data-price data-monthly={tier.monthlyPrice} data-yearly={tier.yearlyPrice}>
+                {tier.monthlyPrice}
+              </span>
+              {tier.priceUnit && <span class="plan-unit">/ {tier.priceUnit}</span>}
+            </div>
+          </div>
+
+          <a class="plan-btn" href="#demo">{tier.cta}</a>
+
+          <div class="plan-features">
+            {tier.features.map((feature) => (
+              <div class="feat">
+                <span class="check" aria-hidden="true"></span>
+                <span>{feature}</span>
+              </div>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pricing {
+    background: var(--white);
+    color: var(--black);
+    padding: 128px 0 118px;
+  }
+
+  .head {
+    text-align: center;
+    max-width: 980px;
+    margin: 0 auto 72px;
+  }
+
+  .head .section-title {
+    font-size: clamp(54px, 8vw, 112px);
+    line-height: 0.92;
+    letter-spacing: 0;
+  }
+
+  .subtitle {
+    max-width: 650px;
+    margin: 22px auto 0;
+    color: rgba(11, 11, 11, 0.62);
+    font-size: clamp(16px, 1.5vw, 20px);
+    line-height: 1.45;
+  }
+
+  .billing {
+    width: max-content;
+    max-width: 100%;
+    margin: 36px auto 0;
+    padding: 8px;
+    border: 1px solid var(--black);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .discount {
+    background: var(--black);
+    color: var(--white);
+    border: 1px solid var(--black);
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .billing-label {
+    border: 0;
+    background: transparent;
+    color: rgba(11, 11, 11, 0.48);
+    padding: 7px 2px;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .billing-label.is-active {
+    color: var(--black);
+  }
+
+  .billing-switch {
+    width: 56px;
+    height: 30px;
+    padding: 3px;
+    border: 1px solid var(--black);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .switch-knob {
+    width: 22px;
+    height: 22px;
+    background: var(--black);
+    transform: translateX(0);
+    transition: transform 0.18s ease;
+  }
+
+  .billing-switch.is-monthly .switch-knob {
+    transform: translateX(26px);
+  }
+
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .plan {
+    position: relative;
+    min-height: 510px;
+    background: var(--white);
+    color: var(--black);
+    border: 1px solid rgba(11, 11, 11, 0.18);
+    padding: 26px 24px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.18s ease, border-color 0.18s ease;
+  }
+
+  .plan:hover {
+    border-color: var(--black);
+  }
+
+  .plan.is-highlighted {
+    background: var(--black);
+    color: var(--white);
+    border-color: var(--black);
+    transform: translateY(-18px) scale(1.03);
+    z-index: 1;
+  }
+
+  .plan-badge {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--white);
+    color: var(--black);
+    border: 1px solid var(--black);
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .plan-head {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 26px;
+  }
+
+  .plan-name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+
+  .plan-tagline {
+    color: rgba(11, 11, 11, 0.58);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .plan.is-highlighted .plan-tagline {
+    color: rgba(255, 255, 255, 0.66);
+  }
+
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .plan-price {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 4vw, 52px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: 0;
+  }
+
+  .plan-unit {
+    color: rgba(11, 11, 11, 0.58);
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .plan.is-highlighted .plan-unit {
+    color: rgba(255, 255, 255, 0.68);
+  }
+
+  .plan-btn {
+    width: 100%;
+    margin-bottom: 30px;
+    background: var(--black);
+    color: var(--white);
+    border: 1px solid var(--black);
+    padding: 16px 14px;
+    font-size: 14.5px;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+    transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+
+  .plan-btn:hover {
+    opacity: 0.82;
+  }
+
+  .plan.is-highlighted .plan-btn {
+    background: var(--white);
+    color: var(--black);
+    border-color: var(--white);
+  }
+
+  .plan-features {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .feat {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    color: rgba(11, 11, 11, 0.66);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .plan.is-highlighted .feat {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .check {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    margin-top: 1px;
+    border: 1px solid currentColor;
+  }
+
+  .check::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 9px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  @media (max-width: 1120px) {
+    .plans {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .plan.is-highlighted {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .pricing {
+      padding: 72px 0;
+    }
+
+    .head {
+      margin-bottom: 42px;
+    }
+
+    .head .section-title {
+      font-size: clamp(42px, 13vw, 62px);
+      line-height: 0.96;
+    }
+
+    .subtitle {
+      font-size: 15px;
+    }
+
+    .billing {
+      width: 100%;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .discount {
+      padding: 6px 8px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .billing-label {
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .billing-switch {
+      width: 50px;
+      height: 28px;
+      flex: 0 0 50px;
+    }
+
+    .switch-knob {
+      width: 20px;
+      height: 20px;
+    }
+
+    .billing-switch.is-monthly .switch-knob {
+      transform: translateX(22px);
+    }
+
+    .plans {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .plan {
+      min-height: auto;
+      padding: 28px 24px;
+    }
+  }
+</style>
+
+<script>
+  const pricing = document.querySelector('[data-pricing]');
+
+  if (pricing) {
+    const prices = Array.from(pricing.querySelectorAll('[data-price]'));
+    const toggle = pricing.querySelector('[data-billing-toggle]');
+    const monthlyButton = pricing.querySelector('[data-billing-monthly]');
+    const yearlyButton = pricing.querySelector('[data-billing-yearly]');
+    let isMonthly = true;
+
+    const syncBilling = () => {
+      prices.forEach((price) => {
+        const nextPrice = isMonthly ? price.getAttribute('data-monthly') : price.getAttribute('data-yearly');
+        if (nextPrice) price.textContent = nextPrice;
+      });
+
+      toggle?.classList.toggle('is-monthly', isMonthly);
+      toggle?.setAttribute('aria-pressed', String(isMonthly));
+      monthlyButton?.classList.toggle('is-active', isMonthly);
+      yearlyButton?.classList.toggle('is-active', !isMonthly);
+    };
+
+    toggle?.addEventListener('click', () => {
+      isMonthly = !isMonthly;
+      syncBilling();
+    });
+
+    monthlyButton?.addEventListener('click', () => {
+      isMonthly = true;
+      syncBilling();
+    });
+
+    yearlyButton?.addEventListener('click', () => {
+      isMonthly = false;
+      syncBilling();
+    });
+
+    syncBilling();
+  }
+</script>

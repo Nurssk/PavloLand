@@ -1,0 +1,87 @@
+/* ============================================================
+   PavloDAR AI — monochrome editorial (from PavloDAR AI.dc.html)
+   Black #0B0B0B / white, Anton wordmark, Bricolage headings.
+   ============================================================ */
+
+:root {
+  --black: #0b0b0b;
+  --white: #ffffff;
+  --gray-bg: #f4f4f2;
+  --muted: #8a8a8a;
+  --muted-2: #9a9a9a;
+  --line-dark: rgba(255, 255, 255, 0.15);
+  --line-dark-strong: rgba(255, 255, 255, 0.25);
+  --line-light: rgba(11, 11, 11, 0.12);
+
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Instrument Sans', sans-serif;
+  --font-wordmark: 'Anton', sans-serif;
+
+  --wrap: 1280px;
+}
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--black); color: var(--white); }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+p { margin: 0; }
+a { color: inherit; }
+button { font-family: inherit; }
+
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+}
+
+.eyebrow.on-dark { color: rgba(255, 255, 255, 0.5); }
+.eyebrow.on-light { color: var(--muted); }
+
+.section-title {
+  font-size: 40px;
+  margin: 0;
+}
+
+@keyframes pd-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes pd-fadeup { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}
+
+@media (max-width: 720px) {
+  .wrap { padding: 0 24px; }
+  .section-title { font-size: 30px; }
+}

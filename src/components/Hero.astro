@@ -1,0 +1,353 @@
+---
+const stats = [
+  { value: '1.2M', label: 'aura scans' },
+  { value: '94.7%', label: 'confidence in nothing' },
+  { value: '37', label: 'vibe signals' },
+];
+---
+
+<section class="hero" id="top" data-screen-label="Hero">
+  <!-- two stacked videos crossfade between the drone segments -->
+  <video class="hero-video is-on" id="hero-video-a" src="/hero-a.mp4" autoplay muted playsinline preload="auto" aria-hidden="true"></video>
+  <video class="hero-video" id="hero-video-b" muted playsinline preload="auto" aria-hidden="true"></video>
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <div class="hero-stats">
+    {stats.map((s) => (
+      <div class="stat">
+        <span class="stat-value">{s.value}</span>
+        <span class="stat-label">{s.label}</span>
+      </div>
+    ))}
+  </div>
+
+  <button class="play-btn" type="button" data-open-video>
+    <span class="play-tri"></span>
+    PLAY<br />DEMO
+  </button>
+</section>
+
+<!-- VIDEO MODAL -->
+<div class="modal-backdrop video-backdrop" id="video-modal" hidden>
+  <div class="video-frame" data-stop>
+    <button class="modal-close" type="button" data-close-video aria-label="Close">✕</button>
+    <div class="video-empty">
+      <div class="video-title">Demo reel coming soon</div>
+      <div class="video-sub">Drop your demo video here once it's ready.</div>
+    </div>
+  </div>
+</div>
+
+<!-- METHODOLOGY MODAL -->
+<div class="modal-backdrop method-backdrop" id="methodology-modal" hidden>
+  <div class="method-card" data-stop>
+    <button class="modal-close method-close" type="button" data-close-methodology aria-label="Close">✕</button>
+    <div class="eyebrow on-light">Fake methodology</div>
+    <h3>How IrtyshNet doesn't work.</h3>
+    <div class="method-steps">
+      <div><strong>Step 1 — Signal extraction.</strong> 37 invented urban-vibe signals are sampled from a photo and a name, none of which correspond to any real measurement.</div>
+      <div><strong>Step 2 — Steppe regression.</strong> A proprietary model with no training data whatsoever assigns a resilience coefficient.</div>
+      <div><strong>Step 3 — Aura composite.</strong> Results are blended with a random number generator and presented with full confidence.</div>
+    </div>
+    <div class="method-footer">
+      This is satire. PavloDAR AI does not detect, infer, or claim any real
+      ethnicity, nationality, or geographic origin from any input.
+    </div>
+  </div>
+</div>
+
+<style>
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 720px;
+    background: #0b0b0b;
+    overflow: hidden;
+  }
+
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .hero-video.is-on { opacity: 1; }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .hero-stats {
+    position: absolute;
+    top: 130px;
+    right: 48px;
+    display: flex;
+    gap: 36px;
+    z-index: 2;
+    color: #fff;
+  }
+
+  .stat {
+    text-align: right;
+    display: grid;
+    gap: 2px;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .play-btn {
+    position: absolute;
+    top: 52%;
+    right: 10%;
+    transform: translateY(-50%);
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+    cursor: pointer;
+    z-index: 2;
+    transition: background 0.15s ease;
+  }
+
+  .play-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+  .play-tri {
+    font-size: 0;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 13px solid #fff;
+    margin-bottom: 6px;
+  }
+
+  /* --- modals ------------------------------------------------- */
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .video-backdrop {
+    background: rgba(11, 11, 11, 0.9);
+    padding: 48px;
+  }
+
+  .video-frame {
+    width: 100%;
+    max-width: 960px;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: -44px;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #fff;
+  }
+
+  .video-empty { text-align: center; color: rgba(255, 255, 255, 0.5); }
+
+  .video-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .video-sub { font-size: 13.5px; }
+
+  .method-backdrop {
+    background: rgba(11, 11, 11, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 100;
+    padding: 24px;
+  }
+
+  .method-card {
+    background: #fff;
+    border-radius: 24px;
+    max-width: 560px;
+    width: 100%;
+    padding: 40px;
+    position: relative;
+    animation: pd-fadeup 0.3s ease both;
+  }
+
+  .method-close {
+    top: 24px;
+    right: 24px;
+    font-size: 20px;
+    color: var(--muted);
+  }
+
+  .method-card h3 {
+    font-size: 26px;
+    margin: 0 0 20px;
+  }
+
+  .method-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4a4a4a;
+  }
+
+  .method-steps strong { color: var(--black); }
+
+  .method-footer {
+    margin-top: 28px;
+    font-size: 12.5px;
+    color: var(--muted-2);
+    border-top: 1px solid rgba(11, 11, 11, 0.1);
+    padding-top: 20px;
+  }
+
+  @media (max-width: 860px) {
+    .hero { min-height: 640px; }
+    .hero-stats {
+      top: auto;
+      bottom: calc(6vh + min(19vw, 268px) * 0.82 + 40px);
+      right: 24px;
+      left: 24px;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .stat { text-align: left; }
+    .stat-value { font-size: 21px; }
+    .play-btn { width: 104px; height: 104px; right: 24px; top: 46%; }
+    .video-backdrop { padding: 20px; }
+    .method-card { padding: 32px 24px; }
+  }
+</style>
+
+<script>
+  // Rotate through the drone segments on two stacked videos with a crossfade.
+  // Autoplay can be suppressed (iOS low-power mode) — retry on first touch.
+  const PLAYLIST = ['/hero-a.mp4', '/hero-b.mp4', '/hero-c.mp4'];
+  const va = document.getElementById('hero-video-a') as HTMLVideoElement;
+  const vb = document.getElementById('hero-video-b') as HTMLVideoElement;
+  let active = va;
+  let standby = vb;
+  let nextIdx = 1; // clip queued on the standby video
+  let switching = false;
+
+  standby.src = PLAYLIST[nextIdx];
+  standby.load();
+
+  const swap = () => {
+    if (switching) return;
+    switching = true;
+    standby.currentTime = 0;
+    standby.play().catch(() => {});
+    standby.classList.add('is-on');
+    active.classList.remove('is-on');
+    const finished = active;
+    setTimeout(() => {
+      finished.pause();
+      nextIdx = (nextIdx + 1) % PLAYLIST.length;
+      finished.src = PLAYLIST[nextIdx];
+      finished.load();
+      [active, standby] = [standby, finished];
+      switching = false;
+    }, 850);
+  };
+
+  const watch = (v: HTMLVideoElement) => {
+    v.addEventListener('timeupdate', () => {
+      if (v === active && v.duration && v.duration - v.currentTime < 0.9) swap();
+    });
+    v.addEventListener('ended', () => {
+      if (v === active) swap();
+    });
+  };
+  watch(va);
+  watch(vb);
+
+  const tryPlay = () => active.play().catch(() => {});
+  va.addEventListener('canplay', tryPlay, { once: true });
+  document.addEventListener('pointerdown', tryPlay, { once: true });
+  tryPlay();
+
+  // watchdog: never let the hero go fully dark if a fade misfires
+  setInterval(() => {
+    if (!switching && !va.classList.contains('is-on') && !vb.classList.contains('is-on')) {
+      active.classList.add('is-on');
+    }
+  }, 1000);
+
+  const videoModal = document.getElementById('video-modal')!;
+  const methodModal = document.getElementById('methodology-modal')!;
+
+  const wire = (modal: HTMLElement, openSel: string, closeSel: string) => {
+    document.querySelectorAll(openSel).forEach((b) =>
+      b.addEventListener('click', () => (modal.hidden = false))
+    );
+    modal.querySelectorAll(closeSel).forEach((b) =>
+      b.addEventListener('click', () => (modal.hidden = true))
+    );
+    modal.addEventListener('click', () => (modal.hidden = true));
+    modal.querySelectorAll('[data-stop]').forEach((el) =>
+      el.addEventListener('click', (e) => e.stopPropagation())
+    );
+  };
+
+  wire(videoModal, '[data-open-video]', '[data-close-video]');
+  wire(methodModal, '[data-open-methodology]', '[data-close-methodology]');
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      videoModal.hidden = true;
+      methodModal.hidden = true;
+    }
+  });
+</script>

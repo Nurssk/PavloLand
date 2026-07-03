@@ -1,0 +1,96 @@
+---
+const faqs = [
+  { q: 'Is this scientifically valid?', a: 'Emotionally, yes. Statistically, no.' },
+  { q: 'Do you store photos?', a: 'No, we only store the vibe. Photos are discarded immediately after scanning.' },
+  { q: 'Can this identify where someone is from?', a: 'No. It only measures fictional aura compatibility — it cannot and does not infer real ethnicity, nationality, or origin.' },
+];
+---
+
+<section class="faq-section" id="faq" data-screen-label="FAQ">
+  <div class="inner">
+    <div class="head">
+      <div class="eyebrow on-dark">FAQ</div>
+      <h2 class="section-title">Questions, answered plainly.</h2>
+    </div>
+    <div class="list">
+      {faqs.map((f) => (
+        <details class="item">
+          <summary>
+            <span class="q">{f.q}</span>
+            <span class="icon" aria-hidden="true"></span>
+          </summary>
+          <div class="a">{f.a}</div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-section {
+    background: var(--black);
+    color: #fff;
+    padding: 110px 48px;
+  }
+
+  .inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .head {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--line-dark);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .item {
+    background: var(--black);
+    padding: 24px 28px;
+  }
+
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker { display: none; }
+
+  .q {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .icon {
+    flex-shrink: 0;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .icon::before { content: '+'; }
+  .item[open] .icon::before { content: '−'; }
+
+  .a {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.65);
+    margin-top: 14px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 720px) {
+    .faq-section { padding: 72px 24px; }
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+const testimonials = [
+  { quote: 'It told me I was 91% Pavlodar. I have never been more confused.', name: 'Daniyar K.', role: 'Early Adopter', initials: 'DK' },
+  { quote: 'Finally, AI that solves a problem nobody had.', name: 'Morgan R.', role: 'Beta Tester', initials: 'MR' },
+];
+---
+
+<section class="testimonials" data-screen-label="Testimonials">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow on-light">Testimonials</div>
+      <h2 class="section-title">Trusted by people who tried it once.</h2>
+    </div>
+    <div class="cards">
+      {testimonials.map((t) => (
+        <div class="card">
+          <div class="quote">"{t.quote}"</div>
+          <div class="person">
+            <div class="avatar">{t.initials}</div>
+            <div>
+              <div class="p-name">{t.name}</div>
+              <div class="p-role">{t.role}</div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials { padding: 110px 0; }
+
+  .head {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 56px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .card {
+    border: 1px solid var(--line-light);
+    border-radius: 20px;
+    padding: 36px;
+  }
+
+  .quote {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  .person {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--black);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--font-display);
+  }
+
+  .p-name { font-size: 14px; font-weight: 600; }
+  .p-role { font-size: 12.5px; color: var(--muted); }
+
+  @media (max-width: 860px) {
+    .testimonials { padding: 72px 0; }
+    .cards { grid-template-columns: 1fr; }
+  }
+</style>

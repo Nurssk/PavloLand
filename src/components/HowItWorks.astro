@@ -1,0 +1,107 @@
+---
+const steps = [
+  { num: '01', title: 'Upload a face', desc: 'Drop a photo. Any face works — we only pretend to look at it.' },
+  { num: '02', title: 'Enter a name', desc: 'Full name preferred. Nicknames reduce aura precision by up to 40%.' },
+  { num: '03', title: 'Receive your score', desc: 'IrtyshNet returns your Pavlodar Aura Score in under three seconds.' },
+];
+---
+
+<section class="how" id="how" data-screen-label="How it works">
+  <div class="how-dock" aria-hidden="true">
+    <div class="how-wordmark" data-how-wordmark aria-hidden="true">PAVLODAR</div>
+  </div>
+  <div class="wrap how-content">
+    <div class="grid">
+      {steps.map((s) => (
+        <div class="cell">
+          <div class="num">{s.num}</div>
+          <div class="cell-title">{s.title}</div>
+          <div class="cell-desc">{s.desc}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .how {
+    position: relative;
+    z-index: 3;
+    background: transparent;
+    color: #fff;
+    padding: 0 0 110px;
+  }
+
+  .how-dock {
+    box-sizing: border-box;
+    height: clamp(140px, 21vw, 286px);
+    padding-top: 24px;
+  }
+
+  .how-wordmark {
+    position: sticky;
+    top: var(--dock-top, calc(94vh - 200px));
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto;
+    color: #fff;
+    font-family: var(--font-wordmark);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 0.82;
+    letter-spacing: -0.01em;
+    font-size: min(19vw, 268px);
+    transform: skewX(-6deg);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.12s ease;
+  }
+
+  .how-wordmark.is-docked {
+    opacity: 1;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line-dark);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .cell {
+    background: var(--black);
+    padding: 40px 32px;
+  }
+
+  .num {
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 24px;
+  }
+
+  .cell-title {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .cell-desc {
+    font-size: 14.5px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.55;
+  }
+
+  @media (max-width: 860px) {
+    .how { padding-bottom: 72px; }
+    .how-dock {
+      height: 132px;
+      padding-top: 20px;
+    }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
